@@ -1,0 +1,118 @@
+{
+_____________________________________________________________________________
+!!! IMPORTANTE !!!
+
+1) Este código é base para você criar suas próprias automações (ROBÔS) e coloração.
+Ele por si só sem edição não executa ordens, portanto, assista ao vídeo para acompanhar como você
+pode utilizá-lo para criar seus próprios robôs em 3 simples passos. 
+LINK PARA O VÍDEO => https://youtu.be/oQEG95EPCr0
+
+2) Torne-se você também um MEMBRO APOIADOR do Canal e ajude a manter o projeto gratuito no YOUTUBE!
+=> https://rebrand.ly/membro_apoiador
+
+3) Gostou deste código? Quer receber todos os códigos até hoje desenvolvidos no canal?
+Acesse agora e confira todos os benefícios Exclusivos aos participantes do CLUBE DOS CÓDIGOS!
+=> https://rebrand.ly/clube_dos_codigos
+_____________________________________________________________________________
+* INSTAGRAM: @danilo.profit
+* TIKTOK: @danilo.profit
+* YOUTUBE: https://rebrand.ly/yt_ClubeDoRobo
+* VÍDEO REFERENTE A ESTE CÓDIGO: https://youtu.be/oQEG95EPCr0
+_____________________________________________________________________________
+
+  .g8"""bgd `7MMF'      `7MMF'   `7MF'`7MM"""Yp, `7MM"""YMM
+.dP'     `M   MM          MM       M    MM    Yb   MM    `7
+dM'       `   MM          MM       M    MM    dP   MM   d
+MM            MM          MM       M    MM"""bg.   MMmmMM
+MM.           MM      ,   MM       M    MM    `Y   MM   Y  ,
+`Mb.     ,'   MM     ,M   YM.     ,M    MM    ,9   MM     ,M
+  `"bmmmd'  .JMMmmmmMMM    `bmmmmd"'  .JMMmmmd9  .JMMmmmmMMM
+
+`7MM"""Yb.     .g8""8q.
+  MM    `Yb. .dP'    `YM.
+  MM     `Mb dM'      `MM
+  MM      MM MM        MM
+  MM     ,MP MM.      ,MP
+  MM    ,dP' `Mb.    ,dP'
+.JMMmmmdP'     `"bmmd"'
+ 
+`7MM"""Mq.    .g8""8q.   `7MM"""Yp,   .g8""8q.
+  MM   `MM. .dP'    `YM.   MM    Yb .dP'    `YM.
+  MM   ,M9  dM'      `MM   MM    dP dM'      `MM
+  MMmmdM9   MM        MM   MM"""bg. MM        MM
+  MM  YM.   MM.      ,MP   MM    `Y MM.      ,MP
+  MM   `Mb. `Mb.    ,dP'   MM    ,9 `Mb.    ,dP'
+.JMML. .JMM.  `"bmmd"'   .JMMmmmd9    `"bmmd"'
+
+MMP""MM""YMM `7MM"""Mq.        db      `7MM"""Yb.   `7MM"""YMM  `7MM"""Mq.
+P'   MM   `7   MM   `MM.      ;MM:       MM    `Yb.   MM    `7    MM   `MM.
+     MM        MM   ,M9      ,V^MM.      MM     `Mb   MM   d      MM   ,M9
+     MM        MMmmdM9      ,M  `MM      MM      MM   MMmmMM      MMmmdM9
+     MM        MM  YM.      AbmmmqMA     MM     ,MP   MM   Y  ,   MM  YM.
+     MM        MM   `Mb.   A'     VML    MM    ,dP'   MM     ,M   MM   `Mb.
+   .JMML.    .JMML. .JMM..AMA.   .AMMA..JMMmmmdP'   .JMMmmmmMMM .JMML. .JMM.
+_____________________________________________________________________________
+* INSTAGRAM: @danilo.profit
+* TIKTOK: @danilo.profit
+* YOUTUBE: https://rebrand.ly/yt_ClubeDoRobo
+* VÍDEO REFERENTE A ESTE CÓDIGO: https://youtu.be/oQEG95EPCr0
+_____________________________________________________________________________
+
+SE ESTE CÓDIGO FOR ÚTIL PARA VOCÊ, 
+NÃO SE ESQUEÇA DE AVALIÁ-LO NA LOJA DE ESTRATÉGIAS NELOGICA.
+_____________________________________________________________________________
+}
+
+PARAMETRO
+pEstocastico(9);
+sobreC(75);
+sobreV(25);
+
+VAR
+sinalC,sinalV,stopC,stopV : booleano;
+cor : inteiro;
+
+//VARIÁVEIS DA ESTRATÉGIA
+estocastico : real;// colocar aqui as variáveis necessárias <<----------
+
+INICIO
+
+  //PASSO 1 | CARREGAR INDICADOR
+  estocastico := SlowStochastic(pEstocastico);//Estocástico Lento |  colocar aqui os indicadores necessários <<----------
+  //estocastico := FullStochastic(pEstocastico); //Estocástico Pleno
+  //estocastico := FastStochastic(pEstocastico); //Estocástico Rápido
+
+  //PASSO 2 | SINAIS DE ENTRADA
+  sinalC := (estocastico[1] < sobreV) e (estocastico[0] > sobreV) e (volume > 0); //colocar aqui a configuração do sinal de entrada de compra <<---------- (Retirar a // do inicio da linha antes de editar)   
+  sinalV := (estocastico[1] > sobreC) e (estocastico[0] < sobreC) e (volume > 0); //colocar aqui a configuração do sinal de entrada de venda <<---------- (Retirar a // do inicio da linha antes de editar)
+  
+  //PASSO 3 | SINAIS DE SAÍDAS
+  stopC := ((estocastico > sobreC) ou (estocastico < sobreV)) e (volume > 0); //colocar aqui a configuração do sinal de saída de compra <<---------- (Retirar a // do inicio da linha antes de editar)  
+  stopV := ((estocastico < sobreV) ou (estocastico > sobreC)) e (volume > 0); //colocar aqui a configuração do sinal de saída de venda <<---------- (Retirar a // do inicio da linha antes de editar)
+
+  //========== NÃO MUDAR ABAIXO DESTA LINHA ==========
+  
+  //EXECUÇÃO DE ENTRADA
+  se (sinalC) e (not HasPosition) entao BuyAtMarket
+  senao se (sinalV) e (not HasPosition) entao SellShortAtMarket;
+  
+  //EXECUÇÃO DE SAÍDA
+  se (IsBought) e (stopC) entao SellToCoverAtMarket
+  senao se (IsSold) e (stopV) entao BuyToCoverAtMarket;
+  
+  //COLORAÇÃO
+  se sinalC entao cor:=cllime
+  senao se sinalV entao cor:=clred
+  senao cor:=clwhite;  
+  se (cor[1] = cllime) e (not stopC) entao cor:=cllime;
+  se (cor[1] = clred) e (not stopV) entao cor:=clred;  
+  PaintBar(cor);
+
+FIM;
+
+{
+_____________________________________________________________________________
+SE ESTE CÓDIGO FOR ÚTIL PARA VOCÊ, 
+NÃO SE ESQUEÇA DE AVALIÁ-LO NA LOJA DE ESTRATÉGIAS NELOGICA.
+_____________________________________________________________________________
+}
